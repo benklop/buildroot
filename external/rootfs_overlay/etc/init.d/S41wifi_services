@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# Start wifi services for STA/AP mode selected in config.toml
+#
+
+set -e
+
+case "$1" in
+	start)
+		if [ -f /var/run/aa-proxy-wifi.env ]; then
+			# shellcheck disable=SC1091
+			. /var/run/aa-proxy-wifi.env
+		fi
+
+		WIFI_MODE="${WIFI_MODE:-ap}"
+		IFACE="${IFACE:-wlan0}"
+
+		if [ "$WIFI_MODE" = "ap" ]; then
+			echo "Starting AP services (hostapd + dnsmasq) on $IFACE"
+
+			if [ ! -f /var/run/hostapd.conf ]; then
+				/etc/init.d/S39hostapd_conf start || true
+			fi
+
+			ifup "$IFACE" || true
+
+			if command -v hostapd >/dev/null 2>&1; then
+				hostapd -B /var/run/hostapd.conf || true
+			fi
+
+			if command -v dnsmasq >/dev/null 2>&1; then
+				dnsmasq -C /etc/dnsmasq.conf || true
+			fi
+		else
+			echo "Starting STA networking (ifup $IFACE)"
+			ifup "$IFACE" || true
+		fi
+		;;
+	*)
+		echo "Usage: $0 {start}"
+		exit 1
+		;;
+esac
+
+exit 0

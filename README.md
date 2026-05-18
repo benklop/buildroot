@@ -28,6 +28,20 @@ Useful for testing, debugging, or tweaking the environment without restarting th
 All supported board/device configurations can be found here:  
 👉 [external/configs](https://github.com/aa-proxy/buildroot/tree/main/external/configs) on GitHub
 
+### Infrastructure WiFi (STA)
+
+For dongle + phone on an **existing** LAN (not a dongle hotspot):
+
+```bash
+./docker-dev.sh fleetwood_rpi02w_sta
+```
+
+- WiFi init: `S28aa-proxy-wifi`, `S30wifi_mode`, `S39hostapd_conf`, `S41wifi_services`
+- Default config overlay: `external/board/fleetwood/rootfs_overlay/etc/aa-proxy-rs/config.toml`
+- Builds against sibling `aa-proxy-rs` when present in the Fleetwood monorepo (`../../../aa-proxy-rs`)
+
+AP mode (default) is unchanged: `./docker-dev.sh rpi02w`
+
 ## 💾 Output Image
 After a successful build, the final SD card image (for above example) will be located at:
 

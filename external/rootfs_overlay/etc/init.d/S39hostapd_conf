@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Generate hostapd configuration for AP mode (aa-proxy-rs).
+#
+
+set -e
+
+CONFIG="${AA_PROXY_RS_CONFIG:-/etc/aa-proxy-rs/config.toml}"
+DAEMON="/usr/bin/aa-proxy-rs"
+
+case "$1" in
+	start)
+		if [ -f /var/run/aa-proxy-wifi.env ]; then
+			# shellcheck disable=SC1091
+			. /var/run/aa-proxy-wifi.env
+		fi
+
+		if [ "${WIFI_MODE:-ap}" != "ap" ]; then
+			echo "Skipping hostapd config generation (wifi_mode=${WIFI_MODE:-unknown})"
+			exit 0
+		fi
+
+		if [ ! -x "$DAEMON" ]; then
+			echo "aa-proxy-rs not found at $DAEMON"
+			exit 1
+		fi
+
+		echo "Generate hostapd configuration at /var/run/hostapd.conf"
+		"$DAEMON" -c "$CONFIG" --generate-hostapd
+		;;
+	*)
+		echo "Usage: $0 {start}"
+		exit 1
+		;;
+esac
+
+exit 0

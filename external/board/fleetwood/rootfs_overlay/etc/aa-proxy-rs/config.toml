@@ -1,0 +1,32 @@
+### 📶 SYSTEM / WIFI CONFIGURATION
+  # Wi-Fi role:
+  # - `ap`: dongle creates a hotspot (phone joins the dongle)
+  # - `sta`: dongle joins an existing network (phone joins the same LAN)
+  wifi_mode = "sta"
+  # Enable SSH server
+  enable_ssh = true
+  # AP mode only. Wi-Fi operation mode:
+  # `1` = Wi-Fi 1 (802.11b) (Only 2.4 GHz),
+  # `2` = Wi-Fi 2 (IEEE 802.11a) (Only 5 GHz),
+  # `3` = Wi-Fi 3 (IEEE 802.11g) (only 2.4 GHz),
+  # `4` = Wi-Fi 4 (IEEE 802.11n) (2.4/5 GHz),
+  # `5` = Wi-Fi 5 (IEEE 802.11ac) (only 5 GHz),
+  # `6` = Wi-Fi 6/6E (IEEE 802.11ax) (2.4/5 GHz for Wi-Fi 6, 2.4/5/6 GHz for Wi-Fi 6E),
+  # `7` = Wi-Fi 7 (IEEE 802.11be) (2.4/5/6 GHz)
+  #wifi_version = 6
+  # AP mode only. Wi-Fi Operating frequency: `2.4` OR `5`. The default should be fine. 6 GHz is NOT supported!
+  #band = "5"
+  # Wi-Fi Country code (ISO/IEC 3166-1). Used for regulatory domain (AP hostapd and STA wpa_supplicant).
+  country_code = "US"
+  # AP mode only. Wi-Fi Channel number (IEEE 802.11)
+  #channel = 36
+  # Wi-Fi SSID. In AP mode: hotspot name the dongle advertises. In STA mode: SSID of the existing network to join.
+  ssid = "Sunshine"
+  # Wi-Fi password (WPA-PSK). In AP mode: hotspot password. In STA mode: password for the existing network.
+  wpa_passphrase = "roamathome"
+  # STA mode: router/AP radio MAC (required). Find with `iw dev wlan0 link` on a client already on the network. AP mode: optional override of the dongle BSSID sent to the phone.
+  wifi_bssid = "94:83:c4:ab:29:17"
+  # STA mode: seconds to wait for a DHCP address on `iface` before starting the Bluetooth Wi-Fi handshake.
+  sta_wait_dhcp_secs = 30
+  # BLE password to communicate with companion app, please set it on app too
+  ble_password = ""

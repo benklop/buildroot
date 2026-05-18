@@ -9,18 +9,4 @@ iface lo inet loopback
 #iface usb0 inet dhcp
 #  hostname $(hostname)
 
-auto wlan0
-iface wlan0 inet static
-  address 10.0.0.1
-  netmask 255.255.255.0
-  pre-up aa-proxy-rs --generate-hostapd
-  pre-up hostapd -B -t -f /var/log/hostapd /var/run/hostapd.conf
-  #post-up dnsmasq
-  #pre-down killall -q dnsmasq
-  post-down killall -q hostapd
-
-#auto wlan0
-#iface wlan0 inet dhcp
-#  pre-up wpa_supplicant -D nl80211 -i wlan0 -c /etc/wpa_supplicant.conf -B
-#  post-down killall -q wpa_supplicant
-
+# wlan0 is configured at boot by /etc/init.d/S30wifi_mode (AP or STA).

@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# Generate wifi env and wpa/hostapd configs from /etc/aa-proxy-rs/config.toml
+# Must run before S30wifi_mode / S39hostapd_conf.
+#
+
+set -e
+
+CONFIG="${AA_PROXY_RS_CONFIG:-/etc/aa-proxy-rs/config.toml}"
+DAEMON="/usr/bin/aa-proxy-rs"
+
+case "$1" in
+	start)
+		if [ ! -x "$DAEMON" ]; then
+			echo "aa-proxy-rs not found at $DAEMON"
+			exit 1
+		fi
+
+		"$DAEMON" -c "$CONFIG" --generate-wifi-env
+
+		# shellcheck disable=SC1091
+		. /var/run/aa-proxy-wifi.env
+
+		if [ "$WIFI_MODE" = "sta" ]; then
+			"$DAEMON" -c "$CONFIG" --generate-wpa-conf
+		fi
+		;;
+	*)
+		echo "Usage: $0 {start}"
+		exit 1
+		;;
+esac
+
+exit 0
